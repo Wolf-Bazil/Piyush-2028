@@ -5,7 +5,7 @@ import AlertFeed from './AlertFeed';
 import Sparkline from './Sparkline';
 import StationMap from './StationMap';
 import Timeline from './Timeline';
-import { Card, CountUp, EASE, Reveal, SectionHead, Wrap } from './ui';
+import { CountUp, EASE, Reveal, SectionHead, Wrap } from './ui';
 
 const WINDOW_HOURS = 24;
 const DIGITS = { temperature: 1, humidity: 0, pressure: 1, wind_speed: 1, rainfall: 1 };
@@ -35,7 +35,8 @@ export default function LiveNetwork({ data, replay }) {
   const current = data.incidents.find((x) => x.station === selected && x.start <= t && x.end >= t);
 
   return (
-    <section id="live" className="py-16 sm:py-24">
+    <section id="live" className="relative py-16 sm:py-24">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(139,124,255,0.12),transparent_70%)]" />
       <Wrap>
         <SectionHead
           eyebrow="Live network"
@@ -52,15 +53,16 @@ export default function LiveNetwork({ data, replay }) {
         />
 
         <Reveal delay={120}>
-          <Card className="mt-10 p-4 sm:p-6">
+          <div className="rim mt-10">
+          <div className="rounded-[calc(1.25rem-1px)] bg-[linear-gradient(180deg,#0c1119,#070a10)] p-4 shadow-lift sm:p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex flex-wrap items-center gap-2">
                 {[CLS.NORMAL, CLS.FAULT, CLS.WEATHER, CLS.MISSING].map((c) => (
                   <span
                     key={c}
-                    className="inline-flex items-center gap-2 rounded-full border hairline bg-white px-3 py-1.5 text-[12px] text-ink-2"
+                    className="inline-flex items-center gap-2 rounded-full border hairline bg-white/[0.03] px-3 py-1.5 text-[12px] text-ink-2"
                   >
-                    <span className="h-2 w-2 rounded-full" style={{ background: c === CLS.NORMAL ? '#16130f' : CLS_META[c].color }} />
+                    <span className="h-2 w-2 rounded-full" style={{ background: c === CLS.NORMAL ? '#eef0f3' : CLS_META[c].color }} />
                     {CLS_META[c].label}
                     <motion.span key={counts[c]} initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="font-mono font-medium text-ink tabular">
                       {counts[c]}
@@ -79,10 +81,10 @@ export default function LiveNetwork({ data, replay }) {
             </div>
 
             <div className="mt-6 grid gap-6 lg:grid-cols-12">
-              <div className="self-start rounded-xl border hairline bg-paper-2/40 lg:sticky lg:top-20 lg:col-span-7">
+              <div className="min-w-0 self-start overflow-hidden rounded-xl border hairline bg-[radial-gradient(80%_80%_at_50%_45%,rgba(45,212,239,0.07),rgba(5,7,11,0.6))] lg:sticky lg:top-20 lg:col-span-7">
                 <StationMap data={data} t={t} selected={selected} onSelect={setSelected} />
               </div>
-              <div className="lg:col-span-5">
+              <div className="min-w-0 lg:col-span-5">
                 <div className="mb-3 flex items-center justify-between">
                   <h3 className="text-[14px] font-semibold text-ink">Alerts</h3>
                   <div className="flex rounded-full border hairline-2 p-0.5">
@@ -93,7 +95,7 @@ export default function LiveNetwork({ data, replay }) {
                         className="relative h-7 rounded-full px-3 text-[12px] text-ink-2"
                       >
                         {filter === f.key && (
-                          <motion.span layoutId="filter-pill" className="absolute inset-0 rounded-full bg-paper-2" transition={{ type: 'spring', stiffness: 400, damping: 34 }} />
+                          <motion.span layoutId="filter-pill" className="absolute inset-0 rounded-full bg-white/10" transition={{ type: 'spring', stiffness: 400, damping: 34 }} />
                         )}
                         <span className={`relative ${filter === f.key ? 'text-ink' : ''}`}>{f.label}</span>
                       </button>
@@ -124,8 +126,8 @@ export default function LiveNetwork({ data, replay }) {
                     <span
                       className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[12px] font-medium"
                       style={{
-                        color: nowCls === CLS.NORMAL ? '#2f7d4f' : CLS_META[nowCls].color,
-                        background: nowCls === CLS.NORMAL ? '#dff1e5' : nowCls === CLS.FAULT ? '#fbe2e4' : nowCls === CLS.WEATHER ? '#d5f1f7' : '#f7f5f0',
+                        color: nowCls === CLS.NORMAL ? '#34d399' : CLS_META[nowCls].color,
+                        background: nowCls === CLS.NORMAL ? 'rgba(52,211,153,0.14)' : nowCls === CLS.FAULT ? 'rgba(255,91,107,0.14)' : nowCls === CLS.WEATHER ? 'rgba(45,212,239,0.14)' : 'rgba(255,255,255,0.04)',
                       }}
                     >
                       {nowCls === CLS.NORMAL ? 'All sensors nominal' : CLS_META[nowCls].label}
@@ -152,7 +154,8 @@ export default function LiveNetwork({ data, replay }) {
                 Click any station on the map. Shaded spans are flagged steps; dots are the readings the engine blamed on that sensor.
               </p>
             </div>
-          </Card>
+          </div>
+          </div>
         </Reveal>
 
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -163,7 +166,7 @@ export default function LiveNetwork({ data, replay }) {
             { label: 'Cloud API calls', value: 0, suffix: '' },
           ].map((k, i) => (
             <Reveal key={k.label} delay={i * 60}>
-              <div className="rounded-2xl border hairline bg-white p-4">
+              <div className="glass rounded-2xl p-4">
                 <p className="text-[12px] text-ink-3">{k.label}</p>
                 <p className="mt-1 text-[26px] font-semibold tracking-[-0.03em] text-ink">
                   <CountUp to={k.value} decimals={k.decimals || 0} suffix={k.suffix} />

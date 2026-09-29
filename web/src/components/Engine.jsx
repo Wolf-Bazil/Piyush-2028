@@ -60,7 +60,9 @@ const RULES = [
 
 export default function Engine() {
   return (
-    <section id="engine" className="border-y hairline bg-paper-2/50 py-16 sm:py-24">
+    <section id="engine" className="relative overflow-hidden py-16 sm:py-24">
+      <div aria-hidden="true" className="divider absolute inset-x-0 top-0" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_80%_20%,rgba(139,124,255,0.12),transparent_70%),radial-gradient(50%_40%_at_10%_90%,rgba(45,212,239,0.08),transparent_70%)]" />
       <Wrap>
         <SectionHead
           eyebrow="How it decides"
@@ -75,18 +77,24 @@ export default function Engine() {
         <div className="relative mt-12">
           <motion.div
             aria-hidden="true"
-            className="absolute left-0 right-0 top-[27px] hidden h-px origin-left bg-ink/15 lg:block"
+            className="absolute left-0 right-0 top-[27px] hidden h-px origin-left bg-gradient-to-r from-weather/60 via-violet/50 to-fault/40 lg:block"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1.6, ease: EASE }}
           />
+          <motion.span
+            aria-hidden="true"
+            className="absolute top-[24px] hidden h-[7px] w-[7px] rounded-full bg-white shadow-[0_0_14px_4px_rgba(45,212,239,0.9)] lg:block"
+            animate={{ left: ['0%', '100%'], opacity: [0, 1, 1, 0] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.8 }}
+          />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
             {STAGES.map((s, i) => (
               <Reveal key={s.title} delay={i * 90}>
-                <div className="relative">
-                  <div className="relative z-10 inline-flex h-14 w-14 items-center justify-center rounded-2xl border hairline-2 bg-white shadow-lift">
-                    <s.icon size={20} strokeWidth={1.6} className="text-ink" />
+                <div className="group relative">
+                  <div className="glass relative z-10 inline-flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-500 group-hover:border-weather/50 group-hover:shadow-glow">
+                    <s.icon size={20} strokeWidth={1.6} className="text-weather" />
                   </div>
                   <p className="mt-4 font-mono text-[11px] text-ink-3">0{i + 1}</p>
                   <h3 className="mt-1 text-[16px] font-semibold tracking-[-0.02em] text-ink">{s.title}</h3>
@@ -100,7 +108,7 @@ export default function Engine() {
         <div className="mt-16 grid gap-4 md:grid-cols-2">
           {RULES.map((r, i) => (
             <Reveal key={r.title} delay={i * 120}>
-              <div className="h-full rounded-2xl border hairline bg-white p-6 shadow-lift">
+              <div className="glass h-full rounded-2xl p-6">
                 <div className="flex items-center gap-2.5">
                   <span className={`h-2.5 w-2.5 rounded-full ${r.tone === 'fault' ? 'bg-fault' : 'bg-weather'}`} />
                   <h3 className="text-[20px] font-semibold tracking-[-0.03em] text-ink">{r.title}</h3>

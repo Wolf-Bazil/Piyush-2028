@@ -36,7 +36,7 @@ export default function Timeline({ data, replay }) {
         <button
           onClick={toggle}
           aria-label={playing ? 'Pause replay' : 'Play replay'}
-          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-white shadow-pill transition-transform duration-300 active:scale-95"
+          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-paper shadow-pill transition-transform duration-300 active:scale-95"
         >
           {playing ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" className="ml-0.5" />}
         </button>
@@ -48,7 +48,7 @@ export default function Timeline({ data, replay }) {
               className="relative h-8 rounded-full px-3 font-mono text-[12px] text-ink-2"
             >
               {speed === i && (
-                <motion.span layoutId="speed-pill" className="absolute inset-0 rounded-full bg-paper-2" transition={{ type: 'spring', stiffness: 400, damping: 34 }} />
+                <motion.span layoutId="speed-pill" className="absolute inset-0 rounded-full bg-white/10" transition={{ type: 'spring', stiffness: 400, damping: 34 }} />
               )}
               <span className={`relative ${speed === i ? 'text-ink' : ''}`}>{s.label}</span>
             </button>
@@ -60,7 +60,7 @@ export default function Timeline({ data, replay }) {
       </div>
 
       <div className="relative flex-1">
-        <div className="pointer-events-none absolute inset-x-0 top-[10px] h-2 rounded-full bg-paper-2">
+        <div className="pointer-events-none absolute inset-x-0 top-[10px] h-2 overflow-hidden rounded-full bg-white/[0.06]">
           {marks.map((m) => (
             <span
               key={m.id}

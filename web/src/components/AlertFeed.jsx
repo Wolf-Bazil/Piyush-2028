@@ -29,7 +29,7 @@ export default function AlertFeed({ data, t, onSelect, filter }) {
               >
                 <button
                   onClick={() => onSelect(x.station)}
-                  className="group w-full rounded-xl border hairline bg-white px-3.5 py-3 text-left transition-colors hover:border-ink/20"
+                  className="group w-full rounded-xl border hairline bg-white/[0.03] px-3.5 py-3 text-left transition-colors hover:border-ink/20"
                 >
                   <div className="flex items-center gap-2">
                     <span className="relative inline-flex h-2 w-2">
@@ -61,7 +61,7 @@ export default function AlertFeed({ data, t, onSelect, filter }) {
           No alerts yet. Press play.
         </p>
       )}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#0a0d13] to-transparent" />
       {seen.length > LIMIT && (
         <p className="mt-2 text-center text-[12px] text-ink-3">+{seen.length - LIMIT} earlier</p>
       )}

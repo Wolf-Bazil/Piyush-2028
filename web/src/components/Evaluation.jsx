@@ -4,7 +4,7 @@ import { Card, EASE, Reveal, SectionHead, Wrap } from './ui';
 
 const ORDER = ['normal', 'sensor_fault', 'weather_event', 'missing'];
 const LABEL = { normal: 'Normal', sensor_fault: 'Fault', weather_event: 'Weather', missing: 'No data' };
-const COLOR = { normal: '#16130f', sensor_fault: '#d93a45', weather_event: '#0891b2', missing: '#857e75' };
+const COLOR = { normal: '#eef0f3', sensor_fault: '#ff5b6b', weather_event: '#2dd4ef', missing: '#6b7482' };
 
 function Confusion({ confusion }) {
   return (
@@ -40,10 +40,10 @@ function Confusion({ confusion }) {
                         transition={{ delay: 0.05 * (i * 4 + j), duration: 0.5, ease: EASE }}
                         style={{
                           background: diag
-                            ? `rgba(47,125,79,${0.08 + share * 0.3})`
+                            ? `rgba(52,211,153,${0.08 + share * 0.3})`
                             : n
-                              ? `rgba(217,58,69,${0.05 + Math.min(0.35, share * 2)})`
-                              : '#f7f5f0',
+                              ? `rgba(255,91,107,${0.05 + Math.min(0.35, share * 2)})`
+                              : 'rgba(255,255,255,0.04)',
                         }}
                       >
                         <span className="font-mono text-[14px] font-medium text-ink tabular">{n.toLocaleString('en-IN')}</span>
@@ -67,7 +67,9 @@ export default function Evaluation({ data }) {
   const incidents = data.injected || [];
 
   return (
-    <section id="evaluation" className="border-t hairline bg-paper-2/50 py-16 sm:py-24">
+    <section id="evaluation" className="relative py-16 sm:py-24">
+      <div aria-hidden="true" className="divider absolute inset-x-0 top-0" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_40%_at_20%_10%,rgba(45,212,239,0.08),transparent_70%)]" />
       <Wrap>
         <SectionHead
           eyebrow="Evaluation"
@@ -80,7 +82,7 @@ export default function Evaluation({ data }) {
         />
 
         <div className="mt-10 grid gap-6 lg:grid-cols-12">
-          <Reveal className="lg:col-span-6" delay={60}>
+          <Reveal className="min-w-0 lg:col-span-6" delay={60}>
             <Card className="h-full p-5">
               <p className="font-mono text-[11px] uppercase tracking-wider text-ink-3">Confusion matrix · {m.rows.toLocaleString('en-IN')} station readings</p>
               <div className="mt-4">
@@ -103,7 +105,7 @@ export default function Evaluation({ data }) {
             </Card>
           </Reveal>
 
-          <Reveal className="lg:col-span-6" delay={140}>
+          <Reveal className="min-w-0 lg:col-span-6" delay={140}>
             <Card className="h-full p-5">
               <p className="font-mono text-[11px] uppercase tracking-wider text-ink-3">Every injected incident</p>
               <ul className="mt-4 flex flex-col gap-3">
@@ -117,7 +119,7 @@ export default function Evaluation({ data }) {
                           {x.type === 'weather' ? x.station.split(',').length + ' stations' : x.station} · {x.truth_steps} steps
                         </p>
                       </div>
-                      <div className="h-1.5 overflow-hidden rounded-full bg-paper-3">
+                      <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.08]">
                         <motion.div
                           className="h-full rounded-full"
                           style={{ background: color }}

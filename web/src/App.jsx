@@ -48,7 +48,8 @@ export default function App() {
   }, []);
 
   return (
-    <div id="top" className="min-h-screen bg-white">
+    <div id="top" className="relative min-h-screen bg-paper">
+      <div className="grain" aria-hidden="true" />
       <Nav />
       <main>
         {data ? (

@@ -22,10 +22,10 @@ export async function loadNetwork() {
 export const CLS = { NORMAL: 0, FAULT: 1, WEATHER: 2, MISSING: 3 };
 
 export const CLS_META = {
-  0: { key: 'normal', label: 'Normal', color: '#857e75' },
-  1: { key: 'fault', label: 'Sensor fault', color: '#d93a45' },
-  2: { key: 'weather', label: 'Extreme weather', color: '#0891b2' },
-  3: { key: 'missing', label: 'No data', color: '#b8b1a6' },
+  0: { key: 'normal', label: 'Normal', color: '#6b7482' },
+  1: { key: 'fault', label: 'Sensor fault', color: '#ff5b6b' },
+  2: { key: 'weather', label: 'Extreme weather', color: '#2dd4ef' },
+  3: { key: 'missing', label: 'No data', color: '#4b5260' },
 };
 
 export const PARAM_META = {

@@ -11,6 +11,7 @@ const PY = 8;
 // One sensor's last 24 hours up to the replay cursor. Bands mark steps the
 // detector flagged; dots mark the exact readings it blamed on this sensor.
 export default function Sparkline({ values, verdicts, blamed, label, unit, digits = 1 }) {
+  const gid = label.replace(/\W+/g, '-').toLowerCase();
   const { path, area, dots, bands, lo, hi, current } = useMemo(() => {
     const finite = values.filter((v) => v !== null && v !== undefined);
     let lo = Math.min(...finite);
@@ -78,7 +79,7 @@ export default function Sparkline({ values, verdicts, blamed, label, unit, digit
   const tone = blamedNow ? (nowCls === CLS.WEATHER ? 'text-weather' : 'text-fault') : 'text-ink';
 
   return (
-    <div className="rounded-xl border hairline bg-white p-3.5">
+    <div className="glass rounded-xl p-3.5">
       <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
         <span className="text-[12px] font-medium text-ink-2">{label}</span>
         <span className={`font-mono text-[15px] font-medium tabular ${tone} transition-colors duration-300`}>
@@ -94,15 +95,25 @@ export default function Sparkline({ values, verdicts, blamed, label, unit, digit
             y={0}
             width={Math.max(2, b.x1 - b.x0)}
             height={H}
-            fill={b.c === CLS.WEATHER ? 'rgba(8,145,178,0.08)' : b.c === CLS.FAULT ? 'rgba(217,58,69,0.08)' : 'rgba(133,126,117,0.10)'}
+            fill={b.c === CLS.WEATHER ? 'rgba(45,212,239,0.08)' : b.c === CLS.FAULT ? 'rgba(255,91,107,0.08)' : 'rgba(107,116,130,0.10)'}
           />
         ))}
-        <path d={area} fill="rgba(22,19,15,0.035)" />
-        <path d={path} fill="none" stroke="#16130f" strokeWidth="1.3" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+        <defs>
+          <linearGradient id={`area-${gid}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#2dd4ef" stopOpacity="0.22" />
+            <stop offset="1" stopColor="#2dd4ef" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id={`line-${gid}`} x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#8b7cff" stopOpacity="0.5" />
+            <stop offset="1" stopColor="#2dd4ef" />
+          </linearGradient>
+        </defs>
+        <path d={area} fill={`url(#area-${gid})`} />
+        <path d={path} fill="none" stroke={`url(#line-${gid})`} strokeWidth="1.4" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
         {dots.map((d, i) => (
-          <circle key={i} cx={d.x} cy={d.y} r="2.4" fill={d.c === CLS.WEATHER ? '#0891b2' : '#d93a45'} vectorEffect="non-scaling-stroke" />
+          <circle key={i} cx={d.x} cy={d.y} r="2.4" fill={d.c === CLS.WEATHER ? '#2dd4ef' : '#ff5b6b'} vectorEffect="non-scaling-stroke" />
         ))}
-        <line x1={W - PX} x2={W - PX} y1={0} y2={H} stroke="rgba(22,19,15,0.25)" strokeDasharray="2 3" />
+        <line x1={W - PX} x2={W - PX} y1={0} y2={H} stroke="rgba(255,255,255,0.25)" strokeDasharray="2 3" />
       </svg>
       <div className="mt-1 flex justify-between font-mono text-[10px] text-ink-3 tabular">
         <span>−24 h</span>

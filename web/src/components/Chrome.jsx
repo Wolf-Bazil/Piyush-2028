@@ -15,9 +15,15 @@ export function Logo() {
   return (
     <a href="#top" className="inline-flex items-center gap-2.5">
       <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
-        <rect width="32" height="32" rx="9" fill="#16130f" />
-        <circle cx="16" cy="16" r="4" fill="#fff" />
-        <circle cx="16" cy="16" r="9" fill="none" stroke="#fff" strokeOpacity=".45" strokeWidth="1.5" />
+        <defs>
+          <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#2dd4ef" />
+            <stop offset="1" stopColor="#8b7cff" />
+          </linearGradient>
+        </defs>
+        <rect width="32" height="32" rx="9" fill="url(#logo-g)" />
+        <circle cx="16" cy="16" r="4" fill="#05070b" />
+        <circle cx="16" cy="16" r="9" fill="none" stroke="#05070b" strokeOpacity=".5" strokeWidth="1.5" />
       </svg>
       <span className="text-[16px] font-semibold tracking-[-0.03em] text-ink">SkyNova</span>
     </a>
@@ -26,9 +32,9 @@ export function Logo() {
 
 export function Nav() {
   const { scrollY } = useScroll();
-  const border = useTransform(scrollY, [0, 40], ['rgba(22,19,15,0)', 'rgba(22,19,15,0.075)']);
+  const border = useTransform(scrollY, [0, 40], ['rgba(255,255,255,0)', 'rgba(255,255,255,0.075)']);
   return (
-    <motion.header style={{ borderBottomColor: border }} className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md">
+    <motion.header style={{ borderBottomColor: border }} className="sticky top-0 z-50 border-b bg-[#05070b]/60 backdrop-blur-xl">
       <Wrap className="flex h-16 items-center justify-between">
         <Logo />
         <nav className="hidden items-center gap-7 md:flex">

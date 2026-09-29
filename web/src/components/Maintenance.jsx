@@ -5,15 +5,15 @@ import { fmtNum, fmtStamp } from '../lib/format';
 import { Card, EASE, Reveal, SectionHead, Wrap } from './ui';
 
 const STATUS = {
-  'service now': { color: '#d93a45', bg: '#fbe2e4', rank: 0 },
-  'schedule visit': { color: '#b45309', bg: '#fdf0dc', rank: 1 },
-  watch: { color: '#4f4942', bg: '#efece5', rank: 2 },
-  ok: { color: '#2f7d4f', bg: '#dff1e5', rank: 3 },
+  'service now': { color: '#ff5b6b', bg: 'rgba(255,91,107,0.14)', rank: 0 },
+  'schedule visit': { color: '#fbbf24', bg: 'rgba(251,191,36,0.14)', rank: 1 },
+  watch: { color: '#a3abb8', bg: 'rgba(255,255,255,0.08)', rank: 2 },
+  ok: { color: '#34d399', bg: 'rgba(52,211,153,0.14)', rank: 3 },
 };
 
 function HealthBar({ value, status }) {
   return (
-    <div className="h-1.5 w-full overflow-hidden rounded-full bg-paper-3">
+    <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.08]">
       <motion.div
         className="h-full rounded-full"
         initial={false}
@@ -40,7 +40,8 @@ export default function Maintenance({ data, t }) {
   }, [snap]);
 
   return (
-    <section id="maintenance" className="py-16 sm:py-24">
+    <section id="maintenance" className="relative py-16 sm:py-24">
+      <div aria-hidden="true" className="divider absolute inset-x-0 top-0" />
       <Wrap>
         <SectionHead
           eyebrow="Predictive maintenance"
@@ -53,7 +54,7 @@ export default function Maintenance({ data, t }) {
         />
 
         <div className="mt-10 grid gap-6 lg:grid-cols-12">
-          <Reveal className="lg:col-span-4" delay={60}>
+          <Reveal className="min-w-0 lg:col-span-4" delay={60}>
             <Card className="h-full p-5">
               <p className="font-mono text-[11px] uppercase tracking-wider text-ink-3">Station health</p>
               <p className="mt-1 text-[13px] text-ink-2">{fmtStamp(data.time(snap.at))}</p>
@@ -76,7 +77,7 @@ export default function Maintenance({ data, t }) {
             </Card>
           </Reveal>
 
-          <Reveal className="lg:col-span-8" delay={140}>
+          <Reveal className="min-w-0 lg:col-span-8" delay={140}>
             <Card className="overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[640px] text-left text-[13px]">
@@ -109,7 +110,7 @@ export default function Maintenance({ data, t }) {
                               <span className="font-mono font-medium text-ink">{r.station}</span>
                               <span className="ml-2 text-ink-2">{PARAM_META[r.param].label}</span>
                             </td>
-                            <td className="px-3 py-3 font-mono tabular text-ink">
+                            <td className="whitespace-nowrap px-3 py-3 font-mono tabular text-ink">
                               {r.bias > 0 ? '+' : ''}
                               {fmtNum(r.bias, 2)} <span className="text-ink-3">{unit}</span>
                             </td>
