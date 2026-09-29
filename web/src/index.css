@@ -71,6 +71,13 @@ input[type='range'].scrub::-moz-range-thumb {
   background: #16130f;
 }
 
+/* Station map text: SVG scales down on phones, so enlarge ids, drop names. */
+@media (max-width: 640px) {
+  .map-id { font-size: 17px; }
+  .map-name { display: none; }
+  .map-axis { font-size: 15px; }
+}
+
 @keyframes breathe {
   0%, 100% { opacity: 0.3; transform: scale(0.8); }
   50% { opacity: 1; transform: scale(1); }

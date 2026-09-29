@@ -57,7 +57,7 @@ export default function StationMap({ data, t, selected, onSelect }) {
           return (
             <g key={`lon${lon}`}>
               <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="rgba(22,19,15,0.06)" strokeDasharray="2 6" />
-              <text x={a.x} y={H - 10} textAnchor="middle" className="fill-ink-3 font-mono" fontSize="9">
+              <text x={a.x} y={H - 10} textAnchor="middle" className="map-axis fill-ink-3 font-mono" fontSize="9">
                 {lon.toFixed(1)}°E
               </text>
             </g>
@@ -69,7 +69,7 @@ export default function StationMap({ data, t, selected, onSelect }) {
           return (
             <g key={`lat${lat}`}>
               <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="rgba(22,19,15,0.06)" strokeDasharray="2 6" />
-              <text x={10} y={a.y + 3} className="fill-ink-3 font-mono" fontSize="9">
+              <text x={10} y={a.y + 3} className="map-axis fill-ink-3 font-mono" fontSize="9">
                 {lat.toFixed(1)}°N
               </text>
             </g>
@@ -157,8 +157,7 @@ export default function StationMap({ data, t, selected, onSelect }) {
                 />
               )}
               {isSel && (
-                <motion.circle
-                  layoutId="sel-ring"
+                <circle
                   cx={p.x}
                   cy={p.y}
                   r={13}
@@ -177,10 +176,10 @@ export default function StationMap({ data, t, selected, onSelect }) {
                 strokeDasharray={v === CLS.MISSING ? '2 2' : undefined}
                 transition={{ duration: 0.35 }}
               />
-              <text x={p.x + 12} y={p.y - 4} fontSize="11.5" className="fill-ink font-mono font-medium">
+              <text x={p.x + 17} y={p.y - 3} fontSize="11.5" className="map-id fill-ink font-mono font-medium">
                 {s.id}
               </text>
-              <text x={p.x + 12} y={p.y + 10} fontSize="10.5" className="fill-ink-3">
+              <text x={p.x + 17} y={p.y + 11} fontSize="10.5" className="map-name fill-ink-3">
                 {s.name}
               </text>
             </g>

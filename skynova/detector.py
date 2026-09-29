@@ -230,6 +230,16 @@ class Detector:
         if coh >= C.COHERENCE_MIN:
             return C.WEATHER_EVENT, "*", (
                 f"{C.NAMES[p]} anomaly shared by {coh:.0%} of neighbouring stations")
-        zsp = zs["spatial"][p][t, j]
+        # Quote the comparison that actually fired, not always the spatial one.
+        parts = {
+            "spatial": (zs["spatial"][p][t, j], C.SPATIAL_Z, "from its neighbours"),
+            "temporal": (zs["temporal"][p][t, j], C.TEMPORAL_Z, "from its own last hour"),
+            "climate": (zs["climate"][p][t, j], C.CLIMATE_Z, "from its normal for this time of day"),
+        }
+        z, lim, where = max(parts.values(), key=lambda v: abs(v[0]) / v[1])
+        if abs(z) < lim:
+            return C.SENSOR_FAULT, p, (
+                f"Unusual combination across sensors (Isolation Forest); strongest signal: "
+                f"{C.NAMES[p].lower()} {z:+.1f}σ {where}; neighbours steady")
         return C.SENSOR_FAULT, p, (
-            f"{C.NAMES[p]} deviates {zsp:+.1f}σ from neighbours; no neighbour agrees")
+            f"{C.NAMES[p]} off by {z:+.1f}σ {where}; no neighbour agrees")

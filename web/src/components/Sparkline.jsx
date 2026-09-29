@@ -20,8 +20,8 @@ export default function Sparkline({ values, verdicts, blamed, label, unit, digit
       hi = 1;
     }
     if (hi - lo < 1e-6) {
-      hi += 0.5;
-      lo -= 0.5;
+      hi += 1;
+      lo = lo >= 0 ? Math.max(0, lo - 0.2) : lo - 1;
     }
     const n = values.length;
     const x = (i) => PX + (i / Math.max(1, n - 1)) * (W - PX * 2);
@@ -79,7 +79,7 @@ export default function Sparkline({ values, verdicts, blamed, label, unit, digit
 
   return (
     <div className="rounded-xl border hairline bg-white p-3.5">
-      <div className="flex items-baseline justify-between gap-3">
+      <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
         <span className="text-[12px] font-medium text-ink-2">{label}</span>
         <span className={`font-mono text-[15px] font-medium tabular ${tone} transition-colors duration-300`}>
           {current === null || current === undefined ? 'no data' : fmtNum(current, digits)}

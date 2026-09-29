@@ -3,15 +3,15 @@ import { CLS, CLS_META, PARAM_META } from '../lib/data';
 import { fmtClock, fmtDay, fmtDuration } from '../lib/format';
 import { EASE } from './ui';
 
-const LIMIT = 6;
+const LIMIT = 12;
 
 export default function AlertFeed({ data, t, onSelect, filter }) {
   const seen = data.incidents.filter((x) => x.start <= t && (filter === 'all' || x.cls === filter));
   const shown = seen.slice(-LIMIT).reverse();
 
   return (
-    <div>
-      <ul className="relative flex flex-col gap-2">
+    <div className="relative">
+      <ul className="relative flex h-[420px] flex-col gap-2 overflow-y-auto overscroll-contain pr-1 lg:h-[468px] [scrollbar-width:thin]">
         <AnimatePresence initial={false}>
           {shown.map((x) => {
             const s = data.byId[x.station];
@@ -21,7 +21,7 @@ export default function AlertFeed({ data, t, onSelect, filter }) {
             return (
               <motion.li
                 key={x.id}
-                layout
+                layout="position"
                 initial={{ opacity: 0, y: -14, filter: 'blur(4px)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 exit={{ opacity: 0, transition: { duration: 0.2 } }}
@@ -57,12 +57,13 @@ export default function AlertFeed({ data, t, onSelect, filter }) {
         </AnimatePresence>
       </ul>
       {!shown.length && (
-        <p className="rounded-xl border border-dashed hairline-2 px-4 py-8 text-center text-[13px] text-ink-3">
+        <p className="absolute inset-x-0 top-0 rounded-xl border border-dashed hairline-2 px-4 py-8 text-center text-[13px] text-ink-3">
           No alerts yet. Press play.
         </p>
       )}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent" />
       {seen.length > LIMIT && (
-        <p className="mt-3 text-center text-[12px] text-ink-3">+{seen.length - LIMIT} earlier</p>
+        <p className="mt-2 text-center text-[12px] text-ink-3">+{seen.length - LIMIT} earlier</p>
       )}
     </div>
   );

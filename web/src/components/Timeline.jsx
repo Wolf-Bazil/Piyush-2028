@@ -65,10 +65,15 @@ export default function Timeline({ data, replay }) {
             <span
               key={m.id}
               className="absolute top-0 h-2 rounded-[1px]"
-              style={{ left: `${m.left}%`, width: `${m.width}%`, background: CLS_META[m.cls].color, opacity: 0.75 }}
+              style={{
+                left: `${m.left}%`,
+                width: `${m.width}%`,
+                background: CLS_META[m.cls].color,
+                opacity: m.start <= t ? 0.85 : 0.18,
+                transition: 'opacity 300ms',
+              }}
             />
           ))}
-          <span className="absolute left-0 top-0 h-2 rounded-l-full bg-ink/10" style={{ width: `${(t / (total - 1)) * 100}%` }} />
         </div>
         <input
           type="range"
@@ -82,7 +87,7 @@ export default function Timeline({ data, replay }) {
         <div className="relative mt-1 h-4 font-mono text-[10px] text-ink-3">
           {days.map((d, k) =>
             k % 2 === 0 ? (
-              <span key={d.i} className="absolute -translate-x-1/2" style={{ left: `${(d.i / (total - 1)) * 100}%` }}>
+              <span key={d.i} className={`absolute ${k === 0 ? '' : '-translate-x-1/2'}`} style={{ left: `${(d.i / (total - 1)) * 100}%` }}>
                 {d.label}
               </span>
             ) : null
